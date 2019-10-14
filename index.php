@@ -7,7 +7,7 @@
     See: https://launchpad.net/bugs/1288690
   -->
   <head>
-    <?php header('Location: PHPTesting/login.php');?>
+    <?php header('Location: login.php'); ?>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Apache2 Ubuntu Default Page: It works</title>
     <style type="text/css" media="screen">
