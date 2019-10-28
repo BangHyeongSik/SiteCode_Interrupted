@@ -59,7 +59,7 @@ function sendPost(){
 }
 </script>
 <body>
-	<div>
+	<div onselectstart='return false;'>
 	<?php
 		if (!isset($_SESSION['ID']) && $_SESSION['ID'] == '')
 			header('Location: mainpage.php');
@@ -135,8 +135,12 @@ function sendPost(){
 			</table>");
 		print_r("<table style=\"table-layout:fixed; width:50%; text-align:center; margin:auto;\" border=1>
 			<tr>
-				<td width=\"200px\" height=\"210px\" rowspan=\"3\">
-					<img width=200px height=200px src=\"../HTMLTesting/tiger.jpg\" alt=\"프로필 사진 이었던 것...\">");
+				<td width=\"200px\" height=\"210px\" rowspan=\"3\">");
+		if (empty($profile['image']))
+			$image = "tiger.jpg";
+		else
+			$image = $profile['image'];
+		echo "<img oncontextmenu='return false;' ondragstart='return false;' width=200px height=200px src=\"{$image}\" alt=\"프로필 사진 이었던 것...\">";
 		print_r("
 				</td>
 				

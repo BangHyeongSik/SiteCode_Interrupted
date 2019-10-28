@@ -57,7 +57,7 @@
 			$data = ['id', 'title', 'user', 'created'];
 			$size = [50, 375, 300, 160];
 			$ex = [[false, 'center', ''],
-			[true, 'left', "/PHPTesting/notice.php?"],
+			[true, 'left', "notice.php?"],
 			[true, 'center', ''],
 			[false, 'center', '']];
 

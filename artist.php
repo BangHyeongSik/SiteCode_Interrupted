@@ -11,8 +11,9 @@
 <?php
 	session_cache_limiter("private_no_expire");
 	session_start();
-        require('essential.php');
-	
+    require('essential.php');
+    if (!empty($_POST['re']) && $_POST['re'] == 'true')
+    	echo "<h3>Upload Success!</h3>";
 	$isPreview = false;
 	$dotArray = [1, 2, 4, 6, 8, 10, 15, 20, 25, 800];
 	$colorArray = [[ 0, 0, 0 ],
@@ -71,6 +72,9 @@
 	echo "</form>";
 	echo "</td>";
 	echo "<td style=\"text-align:right; margin:auto;\">";
+	echo "<button style=\"width:150px\" onClick=\"imgUpload();\">Upload to profile</button>";
+	echo "</td>";
+	echo "<td style=\"text-align:right; margin:auto;\">";
 	echo "<button style=\"width:150px;\" onClick=\"imgPreview();\">Preview</button>";
 	echo "</td>";
 	echo "<td style=\"text-align:right; margin:auto;\">";
@@ -86,7 +90,8 @@
 	echo "<div id=\"preview\"></div>";
 ?>
 	<script>
-	var cnvs;
+	var cnvs = document.getElementById('cnvs');
+	var ctx = cnvs.getContext('2d');
 	var ctx;
 	function fillChar(n, digits, chr) {
 		var temp = '';
@@ -99,8 +104,6 @@
 		return temp + n;
 	}
 	$(document).ready(function() {
-		cnvs = document.getElementById('cnvs');
-		ctx = cnvs.getContext('2d');
 		ers = document.getElementById('Erase');
 		var isDraw = false;
 		var isErase = false;
@@ -171,6 +174,17 @@
 		closeMenu.removeChild(closeButton);
 	}
 
+	function imgCopy() {
+		var image = new Image();
+		image.src = <?php echo "'".$_POST['url']."'"; ?>; 
+ 
+ 		ctx.clearRect(0, 0, cnvs.width, cnvs.height);
+
+		image.onload = function(){
+			ctx.drawImage(image,0,0);
+		}
+	}
+
 	function imgPreview() {
 		var bTag = document.getElementById('preview');
 		var preview = document.createElement("img");
@@ -181,7 +195,9 @@
 
 		if ( document.getElementById('imageSite') ) {
 			var site = document.getElementById('imageSite');
+			var button = document.getElementById('close');
 			bTag.removeChild(site);
+			closeMenu.removeChild(button);
 		}
 
 		closeButton.setAttribute("style", "width:150px;");
@@ -197,7 +213,7 @@
 	}
 
 	function imgDownload() {
-	        var now = new Date();
+	    var now = new Date();
 		var imageName = fillChar(now.getFullYear(), 4, '0') + ( fillChar(now.getMonth() + 1, 2, '0') ) + fillChar(now.getDate(), 2, '0') +
 		        "-" + fillChar(now.getHours()*3600 + now.getMinutes()*60 +now.getSeconds(), 8, '0');
 	        var aTag = document.createElement('a');
@@ -207,9 +223,40 @@
 		aTag.click();
 	}
 
+	function imgUpload() {
+		var url = cnvs.toDataURL();
+		var form = document.createElement('form');
+		var hidden;
+
+		form.setAttribute('action', 'artist.php');
+		form.setAttribute('method', 'post');
+
+		hidden = document.createElement('input');
+		hidden.setAttribute('type', 'hidden');
+		hidden.setAttribute('name', 'url');
+		hidden.setAttribute('value', url);
+		form.appendChild(hidden);
+
+		hidden = document.createElement('input');
+		hidden.setAttribute('type', 'hidden');
+		hidden.setAttribute('name', 're');
+		hidden.setAttribute('value', 'true');
+		form.appendChild(hidden);
+
+		document.body.appendChild(form);
+		form.submit();
+	}
+
 	function imgReset() {
-		ctx.clearRect(0,0, cnvs.width, cnvs.height);
+		ctx.clearRect(0, 0, cnvs.width, cnvs.height);
 	}
 </script>
+<?php
+	if (!empty($_POST['re']) && $_POST['re'] == 'true') {
+    	echo "<script>imgCopy();</script>";
+    	$sql = "UPDATE profile SET image=\"".addslashes($_POST['url'])."\" WHERE uid=\"".addslashes($_SESSION['ID'])."\"";
+    	sql_result($sql);
+	}
+?>
 </body>
 </html>

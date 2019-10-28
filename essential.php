@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <?php
 	function sql_result($sql) {
-		$conn = mysqli_connect('localhost', 'root', 'hs28741830', 'loginserver');
+		$conn = mysqli_connect('localhost', 'marung13', 'hs28741830!#', 'marung13');
 		$result = mysqli_query($conn, $sql);
 		return $result;
 	}
