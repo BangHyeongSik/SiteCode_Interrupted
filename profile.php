@@ -50,7 +50,6 @@ function sendPost(){
 			form.appendChild(hiddenField);
 		}
 
-		form.target = self;
 		document.body.appendChild(form);
 
 		form.submit();

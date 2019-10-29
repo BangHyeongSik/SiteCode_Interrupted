@@ -128,7 +128,6 @@
 					hiddenfield.setAttribute('value',valueArray[i]);
 					form.appendChild(hiddenfield);
 				}
-				form.target = self;
 				document.body.appendChild(form);
 				form.submit();
 

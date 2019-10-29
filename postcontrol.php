@@ -53,7 +53,6 @@
 				form.appendChild(hiddenField);
 			}
 
-			form.target = self;
 			document.body.appendChild(form);
 			if (title.length > 50 ) {
 				alert("Enter a title at most 50 characters [Now:"+title.length+"]");
